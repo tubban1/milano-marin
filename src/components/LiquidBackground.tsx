@@ -128,16 +128,16 @@ export default function LiquidBackground() {
           float influence = 1.0 - smoothstep(0.0, gradRad, dist);
           float pulse = (0.55 + 0.45 * sin(time * uSpeed + float(i)));
           
-          // Cycle between Red, Silver, and Black
+          // Cycle between Deep Green, Silver, and Light Green
           int colorIndex = int(mod(float(i), 3.0));
-          vec3 activeColor = uColor1;
+          vec3 activeColor = uColor1; // Deep Green
           float weight = uColor1Weight;
           
           if (colorIndex == 1) {
             activeColor = uColor2; // Silver
             weight = uColor2Weight;
           } else if (colorIndex == 2) {
-            activeColor = uColor3; // Black blobs
+            activeColor = uColor3; // Light Green
             weight = 1.0;
           }
           
@@ -176,19 +176,19 @@ export default function LiquidBackground() {
     const uniforms = {
       uTime: { value: 0 },
       uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-      uColor1: { value: new THREE.Vector3(0.7, 0.0, 0.0) }, // Deep Red
-      uColor2: { value: new THREE.Vector3(0.65, 0.65, 0.75) }, // Metallic Silver
-      uColor3: { value: new THREE.Vector3(0.02, 0.02, 0.05) }, // Deep Black blob
-      uColor4: { value: new THREE.Vector3(0.1, 0.1, 0.2) }, 
-      uColor5: { value: new THREE.Vector3(0.4, 0.4, 0.5) }, 
-      uColor6: { value: new THREE.Vector3(0.1, 0.1, 0.1) },
-      uSpeed: { value: 0.35 }, 
-      uIntensity: { value: 1.6 }, 
-      uGradientSize: { value: 0.9 }, 
+      uColor1: { value: new THREE.Vector3(0.0, 0.2, 0.1) }, // Deep Forest Green
+      uColor2: { value: new THREE.Vector3(0.7, 0.7, 0.8) }, // Metallic Silver
+      uColor3: { value: new THREE.Vector3(0.3, 0.6, 0.3) }, // Soft Light Green
+      uColor4: { value: new THREE.Vector3(0.1, 0.3, 0.2) }, 
+      uColor5: { value: new THREE.Vector3(0.6, 0.8, 0.6) }, 
+      uColor6: { value: new THREE.Vector3(0.05, 0.1, 0.05) },
+      uSpeed: { value: 0.3 }, 
+      uIntensity: { value: 1.4 }, 
+      uGradientSize: { value: 1.0 }, 
       uGradientCount: { value: 6.0 },
       uColor1Weight: { value: 1.0 },
-      uColor2Weight: { value: 0.9 },
-      uDarkNavy: { value: new THREE.Vector3(0.01, 0.01, 0.02) }, 
+      uColor2Weight: { value: 0.8 },
+      uDarkNavy: { value: new THREE.Vector3(0.01, 0.02, 0.01) }, // Very dark forest base
       uGrainIntensity: { value: 0.03 },
       uTouchTexture: { value: touchTexture.texture }
     };

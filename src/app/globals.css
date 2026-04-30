@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #8B0000;
-  --color-primary-dark: #660000;
-  --color-secondary: #D4AF37;
-  --color-accent: #F5F5DC;
-  --color-cream: #FDF5E6;
-  --color-deep-black: #0A0A0A;
+  --color-primary: #1B3022;
+  --color-primary-dark: #0F1D15;
+  --color-secondary: #C0C0C0;
+  --color-accent: #E8F5E9;
+  --color-cream: #F1F8E9;
+  --color-deep-black: #050A07;
   
   --font-serif: var(--font-playfair), Georgia, serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
@@ -32,9 +32,9 @@ h1, h2, h3, .font-serif {
   font-family: var(--font-serif);
 }
 
-/* 渐变金色文字 */
-.text-gold-gradient {
-  background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+/* 渐变银色文字 */
+.text-silver-gradient {
+  background: linear-gradient(to right, #757575, #E0E0E0, #BDBDBD, #F5F5F5, #9E9E9E);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
