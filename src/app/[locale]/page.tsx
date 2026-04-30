@@ -4,7 +4,7 @@ import { Locale } from '@/i18n/config';
 import { FileText, MapPin, Phone, Mail } from 'lucide-react';
 import LiquidBackground from '@/components/LiquidBackground';
 
-export default async function HomePage({ params }: { params: { locale: string } }) {
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const content = await readPageContent('home', locale, homeDefaults(locale as Locale));
   const { hero, drinkMenu, foodMenu } = content;
