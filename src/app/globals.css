@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #8B0000;
+  --color-primary-dark: #660000;
+  --color-secondary: #D4AF37;
+  --color-accent: #F5F5DC;
+  --color-cream: #FDF5E6;
+  --color-deep-black: #0A0A0A;
+  
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+:root {
+  --background: #0A0A0A;
+  --foreground: #F5F5DC;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, .font-serif {
+  font-family: var(--font-serif);
+}
+
+/* 渐变金色文字 */
+.text-gold-gradient {
+  background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* 毛玻璃菜单卡片 */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 1px;
+  padding: 3rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.menu-item {
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  padding: 1.5rem 0;
+  transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+  border-bottom-color: var(--color-secondary);
+  transform: translateX(5px);
+}
+
+/* 背景装饰 */
+.hero-overlay {
+  background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
+}
+
+.nav-blur {
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-reveal {
+  animation: fadeIn 1s ease-out forwards;
+}
