@@ -48,6 +48,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
+      {/* RESERVATION SYSTEM */}
+      <ReservationSystem />
+
       {/* MENU SECTIONS */}
       <main id="menu" className="relative z-10 -mt-20 pb-32">
         <div className="max-w-7xl mx-auto px-6 space-y-40">
@@ -153,9 +156,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
         </div>
       </section>
-
-      {/* RESERVATION SYSTEM */}
-      <ReservationSystem />
 
       {/* CONTACT SECTION */}
       <section id="contact" className="border-t border-white/5 py-32 px-6">
