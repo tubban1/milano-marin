@@ -24,3 +24,19 @@ CREATE TABLE IF NOT EXISTS `milano_marin_content_history` (
   KEY `idx_page_locale` (`page_key`, `locale`),
   KEY `idx_created_at` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='内容修改历史表';
+
+-- 预订信息表
+CREATE TABLE IF NOT EXISTS `milano_marin_reservations` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `guests` INT NOT NULL COMMENT '人数',
+  `date` DATE NOT NULL COMMENT '日期',
+  `time` TIME NOT NULL COMMENT '时间',
+  `last_name` VARCHAR(100) NOT NULL COMMENT '姓',
+  `first_name` VARCHAR(100) NOT NULL COMMENT '名',
+  `phone` VARCHAR(50) NOT NULL COMMENT '电话',
+  `email` VARCHAR(100) NOT NULL COMMENT '邮箱',
+  `notes` TEXT COMMENT '备注（过敏、素食、禁烟等）',
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '预订时间',
+  KEY `idx_date` (`date`),
+  KEY `idx_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='预订信息表';

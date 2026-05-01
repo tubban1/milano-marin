@@ -3,6 +3,7 @@ import { homeDefaults } from '@/content/defaults';
 import { Locale } from '@/i18n/config';
 import { FileText, MapPin, Phone, Mail } from 'lucide-react';
 import LiquidBackground from '@/components/LiquidBackground';
+import ReservationSystem from '@/components/ReservationSystem';
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -152,6 +153,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
         </div>
       </section>
+
+      {/* RESERVATION SYSTEM */}
+      <ReservationSystem />
 
       {/* CONTACT SECTION */}
       <section id="contact" className="border-t border-white/5 py-32 px-6">

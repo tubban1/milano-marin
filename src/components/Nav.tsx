@@ -14,6 +14,10 @@ export default function Nav({ locale }: { locale: string }) {
             Menu
             <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-secondary transition-all group-hover:w-full"></span>
           </a>
+          <a href="#reservation" className="group relative text-xs uppercase tracking-[0.3em] font-medium text-accent/70 hover:text-secondary transition-colors">
+            Reservation
+            <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-secondary transition-all group-hover:w-full"></span>
+          </a>
           <a href="#about" className="group relative text-xs uppercase tracking-[0.3em] font-medium text-accent/70 hover:text-secondary transition-colors">
             Our Story
             <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-secondary transition-all group-hover:w-full"></span>
