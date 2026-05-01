@@ -12,7 +12,7 @@ export default function ReservationSystem() {
   // Form State
   const [formData, setFormData] = useState({
     guests: '2',
-    date: '',
+    date: new Date().toISOString().split('T')[0],
     time: '19:00',
     lastName: '',
     firstName: '',
