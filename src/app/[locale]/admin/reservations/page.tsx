@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import useSWR from 'swr';
-import { Calendar as CalendarIcon, Users, Clock, Phone, Mail, FileText, Lock, RefreshCcw, LogOut } from 'lucide-react';
+import { Calendar as CalendarIcon, Users, Clock, Phone, Mail, FileText, Lock, RefreshCcw, LogOut, Trash2, Edit2, Check, X } from 'lucide-react';
 
 const fetcher = ([url, token]: [string, string]) => 
   fetch(url, { headers: { 'Authorization': token } }).then(res => res.json());
@@ -11,8 +11,9 @@ export default function AdminReservations() {
   const [token, setToken] = useState<string>('');
   const [isAuth, setIsAuth] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editData, setEditData] = useState<any>(null);
 
-  // Auth check
   useEffect(() => {
     const savedToken = localStorage.getItem('admin_token');
     if (savedToken) {
@@ -37,12 +38,50 @@ export default function AdminReservations() {
     setToken('');
   };
 
-  // SWR for data fetching with 5 min refresh interval
   const { data: reservations, error, mutate, isLoading } = useSWR(
     isAuth ? [`/api/admin/reservations?date=${selectedDate}`, token] : null,
     fetcher,
     { refreshInterval: 300000, revalidateOnFocus: true }
   );
+
+  // Actions
+  const handleDelete = async (id: number) => {
+    if (!confirm('Are you sure you want to cancel this reservation?')) return;
+    try {
+      const res = await fetch(`/api/admin/reservations?id=${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': token }
+      });
+      if (res.ok) mutate();
+    } catch (err) { alert('Delete failed'); }
+  };
+
+  const startEdit = (res: any) => {
+    setEditingId(res.id);
+    setEditData({
+      ...res,
+      lastName: res.last_name,
+      firstName: res.first_name,
+      date: new Date(res.date).toISOString().split('T')[0]
+    });
+  };
+
+  const handleSave = async () => {
+    try {
+      const res = await fetch('/api/admin/reservations', {
+        method: 'PATCH',
+        headers: { 
+          'Authorization': token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(editData)
+      });
+      if (res.ok) {
+        setEditingId(null);
+        mutate();
+      }
+    } catch (err) { alert('Save failed'); }
+  };
 
   if (!isAuth) {
     return (
@@ -88,7 +127,6 @@ export default function AdminReservations() {
             <button 
               onClick={() => mutate()}
               className="p-3 bg-white/5 border border-white/10 text-white/60 hover:text-secondary hover:border-secondary transition-all rounded-sm"
-              title="Refresh Data"
             >
               <RefreshCcw size={18} className={isLoading ? 'animate-spin' : ''} />
             </button>
@@ -98,63 +136,65 @@ export default function AdminReservations() {
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
             />
-            <button 
-              onClick={handleLogout}
-              className="p-3 text-white/30 hover:text-red-400 transition-colors"
-            >
+            <button onClick={handleLogout} className="p-3 text-white/30 hover:text-red-400 transition-colors">
               <LogOut size={18} />
             </button>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="glass-card p-6">
-            <p className="text-[10px] uppercase tracking-widest text-white/40 mb-2">Total Bookings</p>
-            <p className="text-3xl font-serif text-white">{reservations?.length || 0}</p>
-          </div>
-          <div className="glass-card p-6 border-l-2 border-secondary">
-            <p className="text-[10px] uppercase tracking-widest text-white/40 mb-2">Total Guests</p>
-            <p className="text-3xl font-serif text-secondary">
-              {reservations?.reduce((acc: number, r: any) => acc + Number(r.guests), 0) || 0}
-            </p>
-          </div>
-          <div className="glass-card p-6">
-            <p className="text-[10px] uppercase tracking-widest text-white/40 mb-2">Selected Date</p>
-            <p className="text-3xl font-serif text-white">{selectedDate}</p>
           </div>
         </div>
 
         {/* List */}
         <div className="space-y-4">
           {isLoading ? (
-            <div className="py-20 text-center text-white/20 uppercase tracking-widest text-xs">Loading...</div>
+            <div className="py-20 text-center text-white/20 uppercase tracking-widest text-xs animate-pulse">Loading...</div>
           ) : reservations?.length === 0 ? (
-            <div className="py-20 text-center glass-card text-white/20 uppercase tracking-widest text-xs">No reservations for this date</div>
+            <div className="py-20 text-center glass-card text-white/20 uppercase tracking-widest text-xs">No reservations</div>
           ) : (
             reservations?.map((res: any) => (
-              <div key={res.id} className="glass-card p-6 flex flex-col md:flex-row gap-6 items-start md:items-center hover:bg-white/[0.02] transition-colors border-l border-white/5 hover:border-secondary/50">
-                <div className="flex items-center gap-4 min-w-[120px]">
-                  <Clock className="text-secondary" size={18} />
-                  <span className="text-xl font-serif text-white">{res.time.substring(0, 5)}</span>
-                </div>
-                
-                <div className="flex-1">
-                  <h4 className="text-lg text-white font-medium mb-1">
-                    {res.last_name} {res.first_name}
-                  </h4>
-                  <div className="flex flex-wrap gap-4 text-xs text-white/40">
-                    <span className="flex items-center gap-1"><Users size={12} /> {res.guests} Guests</span>
-                    <span className="flex items-center gap-1"><Phone size={12} /> {res.phone}</span>
-                    <span className="flex items-center gap-1"><Mail size={12} /> {res.email}</span>
+              <div key={res.id} className="glass-card p-6 flex flex-col gap-6 hover:bg-white/[0.02] transition-all border-l border-white/5 hover:border-secondary/50">
+                {editingId === res.id ? (
+                  // Edit Mode
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <input className="bg-white/10 p-2 text-white text-sm" value={editData.lastName} onChange={e => setEditData({...editData, lastName: e.target.value})} placeholder="Last Name" />
+                    <input className="bg-white/10 p-2 text-white text-sm" value={editData.firstName} onChange={e => setEditData({...editData, firstName: e.target.value})} placeholder="First Name" />
+                    <input className="bg-white/10 p-2 text-white text-sm" type="time" value={editData.time} onChange={e => setEditData({...editData, time: e.target.value})} />
+                    <input className="bg-white/10 p-2 text-white text-sm" type="number" value={editData.guests} onChange={e => setEditData({...editData, guests: e.target.value})} />
+                    <input className="bg-white/10 p-2 text-white text-sm md:col-span-2" value={editData.phone} onChange={e => setEditData({...editData, phone: e.target.value})} />
+                    <input className="bg-white/10 p-2 text-white text-sm md:col-span-2" value={editData.email} onChange={e => setEditData({...editData, email: e.target.value})} />
+                    <textarea className="bg-white/10 p-2 text-white text-sm md:col-span-4" value={editData.notes} onChange={e => setEditData({...editData, notes: e.target.value})} placeholder="Notes" />
+                    <div className="md:col-span-4 flex justify-end gap-2">
+                      <button onClick={() => setEditingId(null)} className="px-4 py-2 text-xs text-white/40 uppercase tracking-widest hover:text-white transition-colors">Cancel</button>
+                      <button onClick={handleSave} className="px-6 py-2 bg-secondary text-primary-dark text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">Save Changes</button>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  // View Mode
+                  <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
+                    <div className="flex items-center gap-4 min-w-[120px]">
+                      <Clock className="text-secondary" size={18} />
+                      <span className="text-xl font-serif text-white">{res.time.substring(0, 5)}</span>
+                    </div>
+                    
+                    <div className="flex-1">
+                      <h4 className="text-lg text-white font-medium mb-1">{res.last_name} {res.first_name}</h4>
+                      <div className="flex flex-wrap gap-4 text-xs text-white/40">
+                        <span className="flex items-center gap-1"><Users size={12} /> {res.guests} Guests</span>
+                        <span className="flex items-center gap-1"><Phone size={12} /> {res.phone}</span>
+                        <span className="flex items-center gap-1"><Mail size={12} /> {res.email}</span>
+                      </div>
+                      {res.notes && (
+                        <div className="mt-3 text-xs text-secondary/60 italic flex gap-2">
+                          <FileText size={14} /> {res.notes}
+                        </div>
+                      )}
+                    </div>
 
-                {res.notes && (
-                  <div className="flex-1 max-w-md bg-black/20 p-3 rounded text-xs text-secondary/80 italic">
                     <div className="flex gap-2">
-                      <FileText size={14} className="shrink-0" />
-                      <span>{res.notes}</span>
+                      <button onClick={() => startEdit(res)} className="p-2 text-white/20 hover:text-secondary transition-colors" title="Edit">
+                        <Edit2 size={18} />
+                      </button>
+                      <button onClick={() => handleDelete(res.id)} className="p-2 text-white/20 hover:text-red-500 transition-colors" title="Delete">
+                        <Trash2 size={18} />
+                      </button>
                     </div>
                   </div>
                 )}
