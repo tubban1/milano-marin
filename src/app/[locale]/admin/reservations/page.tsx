@@ -70,7 +70,7 @@ export default function AdminReservations() {
   }
 
   return (
-    <div className="min-h-screen bg-deep-black text-accent p-6 md:p-12">
+    <div className="min-h-screen bg-deep-black text-accent p-6 pt-24 md:p-12 md:pt-32">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
