@@ -2,10 +2,21 @@
 
 import React, { useState, useEffect } from 'react';
 import useSWR from 'swr';
-import { Calendar as CalendarIcon, Users, Clock, Phone, Mail, FileText, Lock, RefreshCcw, LogOut, Trash2, Edit2, Check, X } from 'lucide-react';
+import { Calendar as CalendarIcon, Users, Clock, Phone, Mail, FileText, Lock, RefreshCcw, LogOut, Trash2, Edit2, Check, X, Plus } from 'lucide-react';
 
 const fetcher = ([url, token]: [string, string]) => 
   fetch(url, { headers: { 'Authorization': token } }).then(res => res.json());
+
+const INITIAL_FORM = {
+  guests: '2',
+  date: '',
+  time: '19:00',
+  lastName: '',
+  firstName: '',
+  phone: '',
+  email: '',
+  notes: ''
+};
 
 export default function AdminReservations() {
   const [token, setToken] = useState<string>('');
@@ -13,6 +24,8 @@ export default function AdminReservations() {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editData, setEditData] = useState<any>(null);
+  const [isAdding, setIsAdding] = useState(false);
+  const [newData, setNewData] = useState({...INITIAL_FORM, date: selectedDate});
 
   useEffect(() => {
     const savedToken = localStorage.getItem('admin_token');
@@ -44,7 +57,6 @@ export default function AdminReservations() {
     { refreshInterval: 300000, revalidateOnFocus: true }
   );
 
-  // Actions
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to cancel this reservation?')) return;
     try {
@@ -66,42 +78,41 @@ export default function AdminReservations() {
     });
   };
 
-  const handleSave = async () => {
+  const handleSaveEdit = async () => {
     try {
       const res = await fetch('/api/admin/reservations', {
         method: 'PATCH',
-        headers: { 
-          'Authorization': token,
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Authorization': token, 'Content-Type': 'application/json' },
         body: JSON.stringify(editData)
       });
+      if (res.ok) { setEditingId(null); mutate(); }
+    } catch (err) { alert('Save failed'); }
+  };
+
+  const handleCreate = async () => {
+    try {
+      const res = await fetch('/api/reservations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newData)
+      });
       if (res.ok) {
-        setEditingId(null);
+        setIsAdding(false);
+        setNewData({...INITIAL_FORM, date: selectedDate});
         mutate();
       }
-    } catch (err) { alert('Save failed'); }
+    } catch (err) { alert('Create failed'); }
   };
 
   if (!isAuth) {
     return (
       <div className="min-h-screen bg-deep-black flex items-center justify-center px-6">
         <div className="glass-card p-10 w-full max-w-md text-center">
-          <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-secondary">
-            <Lock size={32} />
-          </div>
+          <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-secondary"><Lock size={32} /></div>
           <h1 className="text-2xl font-serif text-white mb-8 uppercase tracking-widest">Admin Access</h1>
           <form onSubmit={handleLogin} className="space-y-6">
-            <input 
-              type="password"
-              placeholder="Enter Admin Token"
-              className="w-full bg-white/5 border border-white/10 p-4 text-white text-center focus:outline-none focus:border-secondary transition-all"
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
-            />
-            <button className="w-full bg-secondary text-primary-dark py-4 uppercase tracking-[0.3em] text-xs font-black hover:bg-white transition-all">
-              Login
-            </button>
+            <input type="password" placeholder="Enter Admin Token" className="w-full bg-white/5 border border-white/10 p-4 text-white text-center focus:outline-none focus:border-secondary transition-all" value={token} onChange={(e) => setToken(e.target.value)} />
+            <button className="w-full bg-secondary text-primary-dark py-4 uppercase tracking-[0.3em] text-xs font-black hover:bg-white transition-all">Login</button>
           </form>
         </div>
       </div>
@@ -114,9 +125,7 @@ export default function AdminReservations() {
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-secondary flex items-center justify-center text-primary-dark rounded-sm">
-              <CalendarIcon size={24} />
-            </div>
+            <div className="w-10 h-10 bg-secondary flex items-center justify-center text-primary-dark rounded-sm"><CalendarIcon size={24} /></div>
             <div>
               <h1 className="text-2xl font-serif text-white uppercase tracking-widest">Reservations</h1>
               <p className="text-[10px] text-white/40 uppercase tracking-[0.2em]">Live Management System</p>
@@ -124,56 +133,59 @@ export default function AdminReservations() {
           </div>
 
           <div className="flex items-center gap-4">
-            <button 
-              onClick={() => mutate()}
-              className="p-3 bg-white/5 border border-white/10 text-white/60 hover:text-secondary hover:border-secondary transition-all rounded-sm"
-            >
+            <button onClick={() => setIsAdding(true)} className="p-3 bg-secondary text-primary-dark hover:bg-white transition-all rounded-sm flex items-center gap-2 text-xs font-bold uppercase tracking-widest">
+              <Plus size={16} /> New
+            </button>
+            <button onClick={() => mutate()} className="p-3 bg-white/5 border border-white/10 text-white/60 hover:text-secondary hover:border-secondary transition-all rounded-sm">
               <RefreshCcw size={18} className={isLoading ? 'animate-spin' : ''} />
             </button>
-            <input 
-              type="date"
-              className="bg-white/5 border border-white/10 p-3 text-white focus:outline-none focus:border-secondary rounded-sm"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-            />
-            <button onClick={handleLogout} className="p-3 text-white/30 hover:text-red-400 transition-colors">
-              <LogOut size={18} />
-            </button>
+            <input type="date" className="bg-white/5 border border-white/10 p-3 text-white focus:outline-none focus:border-secondary rounded-sm" value={selectedDate} onChange={(e) => {setSelectedDate(e.target.value); setNewData({...newData, date: e.target.value})}} />
+            <button onClick={handleLogout} className="p-3 text-white/30 hover:text-red-400 transition-colors"><LogOut size={18} /></button>
           </div>
         </div>
 
         {/* List */}
         <div className="space-y-4">
+          {/* Add Form */}
+          {isAdding && (
+            <div className="glass-card p-6 border-2 border-secondary animate-reveal">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                <input className="bg-white/10 p-2 text-white text-sm" value={newData.lastName} onChange={e => setNewData({...newData, lastName: e.target.value})} placeholder="Last Name *" />
+                <input className="bg-white/10 p-2 text-white text-sm" value={newData.firstName} onChange={e => setNewData({...newData, firstName: e.target.value})} placeholder="First Name *" />
+                <input className="bg-white/10 p-2 text-white text-sm" type="time" value={newData.time} onChange={e => setNewData({...newData, time: e.target.value})} />
+                <input className="bg-white/10 p-2 text-white text-sm" type="number" value={newData.guests} onChange={e => setNewData({...newData, guests: e.target.value})} />
+                <input className="bg-white/10 p-2 text-white text-sm md:col-span-2" value={newData.phone} onChange={e => setNewData({...newData, phone: e.target.value})} placeholder="Phone *" />
+                <input className="bg-white/10 p-2 text-white text-sm md:col-span-2" value={newData.email} onChange={e => setNewData({...newData, email: e.target.value})} placeholder="Email *" />
+                <textarea className="bg-white/10 p-2 text-white text-sm md:col-span-4" value={newData.notes} onChange={e => setNewData({...newData, notes: e.target.value})} placeholder="Notes (optional)" />
+              </div>
+              <div className="flex justify-end gap-2">
+                <button onClick={() => setIsAdding(false)} className="px-4 py-2 text-xs text-white/40 uppercase tracking-widest hover:text-white">Cancel</button>
+                <button onClick={handleCreate} className="px-6 py-2 bg-secondary text-primary-dark text-xs font-bold uppercase tracking-widest hover:bg-white">Add Reservation</button>
+              </div>
+            </div>
+          )}
+
           {isLoading ? (
             <div className="py-20 text-center text-white/20 uppercase tracking-widest text-xs animate-pulse">Loading...</div>
-          ) : reservations?.length === 0 ? (
+          ) : reservations?.length === 0 && !isAdding ? (
             <div className="py-20 text-center glass-card text-white/20 uppercase tracking-widest text-xs">No reservations</div>
           ) : (
             reservations?.map((res: any) => (
               <div key={res.id} className="glass-card p-6 flex flex-col gap-6 hover:bg-white/[0.02] transition-all border-l border-white/5 hover:border-secondary/50">
                 {editingId === res.id ? (
-                  // Edit Mode
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <input className="bg-white/10 p-2 text-white text-sm" value={editData.lastName} onChange={e => setEditData({...editData, lastName: e.target.value})} placeholder="Last Name" />
-                    <input className="bg-white/10 p-2 text-white text-sm" value={editData.firstName} onChange={e => setEditData({...editData, firstName: e.target.value})} placeholder="First Name" />
+                    <input className="bg-white/10 p-2 text-white text-sm" value={editData.lastName} onChange={e => setEditData({...editData, lastName: e.target.value})} />
+                    <input className="bg-white/10 p-2 text-white text-sm" value={editData.firstName} onChange={e => setEditData({...editData, firstName: e.target.value})} />
                     <input className="bg-white/10 p-2 text-white text-sm" type="time" value={editData.time} onChange={e => setEditData({...editData, time: e.target.value})} />
                     <input className="bg-white/10 p-2 text-white text-sm" type="number" value={editData.guests} onChange={e => setEditData({...editData, guests: e.target.value})} />
-                    <input className="bg-white/10 p-2 text-white text-sm md:col-span-2" value={editData.phone} onChange={e => setEditData({...editData, phone: e.target.value})} />
-                    <input className="bg-white/10 p-2 text-white text-sm md:col-span-2" value={editData.email} onChange={e => setEditData({...editData, email: e.target.value})} />
-                    <textarea className="bg-white/10 p-2 text-white text-sm md:col-span-4" value={editData.notes} onChange={e => setEditData({...editData, notes: e.target.value})} placeholder="Notes" />
                     <div className="md:col-span-4 flex justify-end gap-2">
-                      <button onClick={() => setEditingId(null)} className="px-4 py-2 text-xs text-white/40 uppercase tracking-widest hover:text-white transition-colors">Cancel</button>
-                      <button onClick={handleSave} className="px-6 py-2 bg-secondary text-primary-dark text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">Save Changes</button>
+                      <button onClick={() => setEditingId(null)} className="px-4 py-2 text-xs text-white/40 uppercase tracking-widest hover:text-white">Cancel</button>
+                      <button onClick={handleSaveEdit} className="px-6 py-2 bg-secondary text-primary-dark text-xs font-bold uppercase tracking-widest hover:bg-white">Save Changes</button>
                     </div>
                   </div>
                 ) : (
-                  // View Mode
                   <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
-                    <div className="flex items-center gap-4 min-w-[120px]">
-                      <Clock className="text-secondary" size={18} />
-                      <span className="text-xl font-serif text-white">{res.time.substring(0, 5)}</span>
-                    </div>
-                    
+                    <div className="flex items-center gap-4 min-w-[120px]"><Clock className="text-secondary" size={18} /><span className="text-xl font-serif text-white">{res.time.substring(0, 5)}</span></div>
                     <div className="flex-1">
                       <h4 className="text-lg text-white font-medium mb-1">{res.last_name} {res.first_name}</h4>
                       <div className="flex flex-wrap gap-4 text-xs text-white/40">
@@ -181,20 +193,11 @@ export default function AdminReservations() {
                         <span className="flex items-center gap-1"><Phone size={12} /> {res.phone}</span>
                         <span className="flex items-center gap-1"><Mail size={12} /> {res.email}</span>
                       </div>
-                      {res.notes && (
-                        <div className="mt-3 text-xs text-secondary/60 italic flex gap-2">
-                          <FileText size={14} /> {res.notes}
-                        </div>
-                      )}
+                      {res.notes && <div className="mt-3 text-xs text-secondary/60 italic flex gap-2"><FileText size={14} /> {res.notes}</div>}
                     </div>
-
                     <div className="flex gap-2">
-                      <button onClick={() => startEdit(res)} className="p-2 text-white/20 hover:text-secondary transition-colors" title="Edit">
-                        <Edit2 size={18} />
-                      </button>
-                      <button onClick={() => handleDelete(res.id)} className="p-2 text-white/20 hover:text-red-500 transition-colors" title="Delete">
-                        <Trash2 size={18} />
-                      </button>
+                      <button onClick={() => startEdit(res)} className="p-2 text-white/20 hover:text-secondary transition-colors"><Edit2 size={18} /></button>
+                      <button onClick={() => handleDelete(res.id)} className="p-2 text-white/20 hover:text-red-500 transition-colors"><Trash2 size={18} /></button>
                     </div>
                   </div>
                 )}
