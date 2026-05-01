@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import pool from '@/lib/db';
+import { query } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
@@ -11,7 +11,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const [result] = await pool.execute(
+    const result = await query(
       `INSERT INTO milano_marin_reservations 
       (guests, date, time, last_name, first_name, phone, email, notes) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
