@@ -214,12 +214,19 @@ export default function AdminReservations() {
             <div className="py-20 text-center glass-card text-white/20 uppercase tracking-widest text-xs">No reservations</div>
           ) : (
             reservations?.map((res: any) => {
-              const now = new Date().getTime();
-              const createdAt = Date.parse(res.created_at);
-              const diffInMinutes = (now - createdAt) / (1000 * 60);
+              // 统一使用北京时间 (Asia/Shanghai) 进行计算
+              const getBeijingNow = () => {
+                const now = new Date();
+                return new Date(now.toLocaleString("en-US", { timeZone: "Asia/Shanghai" }));
+              };
+
+              const nowBJ = getBeijingNow().getTime();
+              const createdAtBJ = new Date(new Date(res.created_at).toLocaleString("en-US", { timeZone: "Asia/Shanghai" })).getTime();
               
-              // 只有在过去 30 分钟内创建的才算新预订 (diff > 0 确保不是未来的时间)
-              const isNew = diffInMinutes > 0 && diffInMinutes < 30;
+              const diffInMinutes = (nowBJ - createdAtBJ) / (1000 * 60);
+              
+              // 只有在过去 30 分钟内创建的才算新预订
+              const isNew = diffInMinutes >= 0 && diffInMinutes < 30;
               
               return (
                 <div key={res.id} className={`glass-card p-6 flex flex-col gap-6 hover:bg-white/[0.02] transition-all border-l-2 relative overflow-hidden ${isNew ? 'border-secondary animate-pulse-subtle bg-secondary/[0.02]' : 'border-white/5 hover:border-secondary/50'}`}>
