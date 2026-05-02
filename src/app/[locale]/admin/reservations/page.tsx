@@ -284,7 +284,6 @@ export default function AdminReservations() {
                       </div>
                       <div className="flex-1">
                         <h4 className="text-lg text-white font-medium mb-1">{res.last_name} {res.first_name}</h4>
-                        <div className="text-[8px] text-white/10 uppercase mb-2">Debug: {String(res.created_at)} | Diff: {isNaN(diffInMinutes) ? 'NaN' : diffInMinutes.toFixed(1)}m</div>
                         <div className="flex flex-wrap gap-4 text-xs text-white/40">
                           <span className="flex items-center gap-1"><Users size={12} /> {res.guests} Guests</span>
                           <span className="flex items-center gap-1"><Phone size={12} /> {res.phone}</span>
