@@ -5,7 +5,16 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Clock, Users, Phone, Mail, FileText, Trash2, Edit2, Calendar, Filter, ChevronRight } from 'lucide-react';
 import useSWR from 'swr';
 
-const fetcher = (url: string) => fetch(url).then(res => res.json());
+// 修正后的 Fetcher：包含鉴权报头
+const fetcher = async (url: string) => {
+  const token = localStorage.getItem('admin_token');
+  const res = await fetch(url, {
+    headers: {
+      'Authorization': token || ''
+    }
+  });
+  return res.json();
+};
 
 const INITIAL_FORM = {
   lastName: '',
@@ -77,7 +86,10 @@ export default function AdminReservations() {
     try {
       const res = await fetch(`/api/admin/reservations`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': token 
+        },
         body: JSON.stringify({ id: editingId, ...editData })
       });
       if (res.ok) {
@@ -92,7 +104,10 @@ export default function AdminReservations() {
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this reservation?')) return;
     try {
-      const res = await fetch(`/api/admin/reservations?id=${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/reservations?id=${id}`, { 
+        method: 'DELETE',
+        headers: { 'Authorization': token }
+      });
       if (res.ok) mutate();
     } catch (error) {
       console.error('Failed to delete:', error);
@@ -104,7 +119,10 @@ export default function AdminReservations() {
     try {
       const res = await fetch('/api/admin/reservations', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': token 
+        },
         body: JSON.stringify(newData)
       });
       if (res.ok) {
@@ -140,6 +158,9 @@ export default function AdminReservations() {
       </div>
     );
   }
+
+  // 确保 reservations 是数组
+  const reservationList = Array.isArray(reservations) ? reservations : [];
 
   return (
     <div className="min-h-screen bg-primary-dark p-6 md:p-12">
@@ -223,15 +244,14 @@ export default function AdminReservations() {
 
           {isLoading ? (
             <div className="py-20 text-center text-white/20 uppercase tracking-widest text-xs animate-pulse">Loading...</div>
-          ) : reservations?.length === 0 && !isAdding ? (
+          ) : reservationList.length === 0 && !isAdding ? (
             <div className="py-20 text-center glass-card text-white/20 uppercase tracking-widest text-xs">No reservations</div>
           ) : (
-            reservations?.map((res: any) => {
+            reservationList.map((res: any) => {
               const now = new Date().getTime();
               const createdAt = new Date(res.created_at).getTime();
               const diffInMinutes = (now - createdAt) / (1000 * 60);
               
-              // 判定为新预订：在过去 60 分钟内创建，或者由于时钟误差处于“未来”10分钟内
               const isNew = diffInMinutes > -10 && diffInMinutes < 60;
               
               return (
