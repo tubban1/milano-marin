@@ -259,7 +259,8 @@ export default function AdminReservations() {
                   </div>
                 )}
               </div>
-            ))
+              );
+            })
           )}
         </div>
       </div>
