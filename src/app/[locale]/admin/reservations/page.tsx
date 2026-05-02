@@ -213,9 +213,20 @@ export default function AdminReservations() {
           ) : reservations?.length === 0 && !isAdding ? (
             <div className="py-20 text-center glass-card text-white/20 uppercase tracking-widest text-xs">No reservations</div>
           ) : (
-            reservations?.map((res: any) => (
-              <div key={res.id} className="glass-card p-6 flex flex-col gap-6 hover:bg-white/[0.02] transition-all border-l border-white/5 hover:border-secondary/50">
-                {editingId === res.id ? (
+            reservations?.map((res: any) => {
+              const isNew = new Date().getTime() - new Date(res.created_at).getTime() < 30 * 60 * 1000;
+              
+              return (
+                <div key={res.id} className={`glass-card p-6 flex flex-col gap-6 hover:bg-white/[0.02] transition-all border-l-2 relative overflow-hidden ${isNew ? 'border-secondary animate-pulse-subtle bg-secondary/[0.02]' : 'border-white/5 hover:border-secondary/50'}`}>
+                  {isNew && (
+                    <div className="absolute top-0 right-0">
+                      <div className="bg-secondary text-primary-dark text-[8px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-bl-sm flex items-center gap-1 shadow-xl">
+                        <span className="w-1 h-1 bg-primary-dark rounded-full animate-ping"></span>
+                        New Reservation
+                      </div>
+                    </div>
+                  )}
+                  {editingId === res.id ? (
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <input className="bg-white/10 p-2 text-white text-sm" value={editData.lastName} onChange={e => setEditData({...editData, lastName: e.target.value})} />
                     <input className="bg-white/10 p-2 text-white text-sm" value={editData.firstName} onChange={e => setEditData({...editData, firstName: e.target.value})} />

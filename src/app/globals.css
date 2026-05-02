@@ -1,89 +1,32 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-primary: #1B3022;
-  --color-primary-dark: #0F1D15;
-  --color-secondary: #C0C0C0;
-  --color-accent: #E8F5E9;
-  --color-cream: #F1F8E9;
-  --color-deep-black: #050A07;
-  
-  --font-serif: var(--font-playfair), Georgia, serif;
-  --font-sans: var(--font-inter), system-ui, sans-serif;
+@layer base {
+  :root {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+  }
 }
 
-:root {
-  --background: #0A0A0A;
-  --foreground: #F5F5DC;
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
-  overflow-x: hidden;
-}
-
-h1, h2, h3, .font-serif {
-  font-family: var(--font-serif);
-}
-
-/* 渐变银色文字 */
-.text-silver-gradient {
-  background: linear-gradient(to right, #757575, #E0E0E0, #BDBDBD, #F5F5F5, #9E9E9E);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-}
-
-/* 毛玻璃菜单卡片 */
-.glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  border-radius: 1px;
-  padding: 3rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-}
-
-.menu-item {
-  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-  padding: 1.5rem 0;
-  transition: all 0.3s ease;
-}
-
-.menu-item:hover {
-  border-bottom-color: var(--color-secondary);
-  transform: translateX(5px);
-}
-
-/* 背景装饰 */
-.hero-overlay {
-  background: radial-gradient(circle at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
-}
-
-.nav-blur {
-  background: rgba(10, 10, 10, 0.8);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  @apply bg-white/[0.03] border border-white/10 backdrop-blur-md rounded-sm;
 }
 
 .animate-reveal {
-  animation: fadeIn 1s ease-out forwards;
+  animation: reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
