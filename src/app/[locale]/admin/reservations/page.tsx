@@ -215,7 +215,7 @@ export default function AdminReservations() {
           ) : (
             reservations?.map((res: any) => {
               const now = new Date().getTime();
-              const createdAt = Date.parse(res.created_at);
+              const createdAt = new Date(res.created_at).getTime();
               const diffInMinutes = (now - createdAt) / (1000 * 60);
               
               // 判定为新预订：在过去 60 分钟内创建，或者由于时钟误差处于“未来”10分钟内
