@@ -249,7 +249,9 @@ export default function AdminReservations() {
           ) : (
             reservationList.map((res: any) => {
               const now = new Date().getTime();
-              const createdAt = new Date(res.created_at).getTime();
+              // 确保字符串被解析为北京时间 (+08:00)
+              const dateStr = String(res.created_at).includes('+') ? res.created_at : `${res.created_at}+08:00`;
+              const createdAt = new Date(dateStr).getTime();
               const diffInMinutes = (now - createdAt) / (1000 * 60);
               
               const isNew = diffInMinutes > -10 && diffInMinutes < 60;

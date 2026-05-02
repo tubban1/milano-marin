@@ -38,6 +38,8 @@ async function getPool(): Promise<mysql.Pool> {
       connectTimeout: 10000,
       enableKeepAlive: true,
       keepAliveInitialDelay: 0,
+      timezone: '+08:00',
+      dateStrings: true,
     })
     global.__dbPoolInitialized = true
   })()
