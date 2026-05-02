@@ -214,7 +214,12 @@ export default function AdminReservations() {
             <div className="py-20 text-center glass-card text-white/20 uppercase tracking-widest text-xs">No reservations</div>
           ) : (
             reservations?.map((res: any) => {
-              const isNew = new Date().getTime() - new Date(res.created_at).getTime() < 30 * 60 * 1000;
+              const now = new Date().getTime();
+              const createdAt = Date.parse(res.created_at);
+              const diffInMinutes = (now - createdAt) / (1000 * 60);
+              
+              // 只有在过去 30 分钟内创建的才算新预订 (diff > 0 确保不是未来的时间)
+              const isNew = diffInMinutes > 0 && diffInMinutes < 30;
               
               return (
                 <div key={res.id} className={`glass-card p-6 flex flex-col gap-6 hover:bg-white/[0.02] transition-all border-l-2 relative overflow-hidden ${isNew ? 'border-secondary animate-pulse-subtle bg-secondary/[0.02]' : 'border-white/5 hover:border-secondary/50'}`}>
