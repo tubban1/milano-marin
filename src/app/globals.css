@@ -1,27 +1,58 @@
 @import "tailwindcss";
 
 @theme {
-  --color-secondary: #c4a484; /* 金色/次要色 */
-  --color-primary-dark: #0a0a0a;
+  --color-primary: #1B3022;
+  --color-primary-dark: #0F1D15;
+  --color-secondary: #C0C0C0;
+  --color-accent: #E8F5E9;
+  --color-cream: #F1F8E9;
+  --color-deep-black: #050A07;
+  
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
 }
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #0A0A0A;
+  --foreground: #F5F5DC;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
+  background-color: var(--background);
   color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
 }
 
-/* 玻璃拟态卡片 */
+h1, h2, h3, .font-serif {
+  font-family: var(--font-serif);
+}
+
+/* 渐变银色文字 */
+.text-silver-gradient {
+  background: linear-gradient(to right, #757575, #E0E0E0, #BDBDBD, #F5F5F5, #9E9E9E);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* 毛玻璃菜单卡片 */
 .glass-card {
   background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  border-radius: 2px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+/* 导航栏样式恢复 */
+.nav-blur {
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
 }
 
 /* 动画定义 */

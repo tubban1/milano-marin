@@ -163,7 +163,7 @@ export default function AdminReservations() {
   const reservationList = Array.isArray(reservations) ? reservations : [];
 
   return (
-    <div className="min-h-screen bg-primary-dark p-6 md:p-12">
+    <div className="min-h-screen bg-primary-dark pt-24 pb-12 px-6 md:px-12">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
           <div>
