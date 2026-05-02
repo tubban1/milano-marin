@@ -227,6 +227,7 @@ export default function AdminReservations() {
                     </div>
                   </div>
                 ) : (
+                  <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
                     <div className="flex flex-col items-start min-w-[120px] gap-1">
                       <div className="flex items-center gap-2"><Clock className="text-secondary" size={16} /><span className="text-xl font-serif text-white">{res.time.substring(0, 5)}</span></div>
                       <div className="flex items-center gap-2 text-[10px] text-white/40 uppercase tracking-widest ml-[22px]">{new Date(res.date).toLocaleDateString('it-IT')}</div>
