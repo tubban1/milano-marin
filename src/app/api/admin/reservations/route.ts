@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    let sql = 'SELECT * FROM milano_marin_reservations';
+    let sql = 'SELECT *, UNIX_TIMESTAMP(created_at) as created_at_ts FROM milano_marin_reservations';
     const params = [];
     
     if (hours) {
