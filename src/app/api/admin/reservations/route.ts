@@ -6,6 +6,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const token = request.headers.get('Authorization');
   const date = searchParams.get('date');
+  const hours = searchParams.get('hours');
 
   if (token !== process.env.ADMIN_TOKEN) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -14,11 +15,19 @@ export async function GET(request: Request) {
   try {
     let sql = 'SELECT * FROM milano_marin_reservations';
     const params = [];
-    if (date) {
+    
+    if (hours) {
+      sql += ' WHERE created_at >= NOW() - INTERVAL ? HOUR';
+      params.push(parseInt(hours));
+      sql += ' ORDER BY created_at DESC';
+    } else if (date) {
       sql += ' WHERE date = ?';
       params.push(date);
+      sql += ' ORDER BY time ASC';
+    } else {
+      sql += ' ORDER BY created_at DESC';
     }
-    sql += ' ORDER BY date DESC, time ASC';
+    
     const results = await query(sql, params);
     return NextResponse.json(results);
   } catch (error: any) {

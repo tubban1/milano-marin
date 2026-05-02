@@ -22,6 +22,8 @@ export default function AdminReservations() {
   const [token, setToken] = useState<string>('');
   const [isAuth, setIsAuth] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [filterMode, setFilterMode] = useState<'recent' | 'date'>('recent');
+  const [recentHours, setRecentHours] = useState<number>(24);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editData, setEditData] = useState<any>(null);
   const [isAdding, setIsAdding] = useState(false);
@@ -52,7 +54,9 @@ export default function AdminReservations() {
   };
 
   const { data: reservations, error, mutate, isLoading } = useSWR(
-    isAuth ? [`/api/admin/reservations?date=${selectedDate}`, token] : null,
+    isAuth 
+      ? [`/api/admin/reservations?${filterMode === 'recent' ? `hours=${recentHours}` : `date=${selectedDate}`}`, token] 
+      : null,
     fetcher,
     { refreshInterval: 300000, revalidateOnFocus: true }
   );
@@ -132,14 +136,53 @@ export default function AdminReservations() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Filter Mode Switcher */}
+            <div className="flex bg-white/5 p-1 rounded-sm border border-white/10">
+              <button 
+                onClick={() => setFilterMode('recent')}
+                className={`px-4 py-2 text-[10px] uppercase tracking-widest transition-all ${filterMode === 'recent' ? 'bg-secondary text-primary-dark font-black' : 'text-white/40 hover:text-white'}`}
+              >
+                Recent
+              </button>
+              <button 
+                onClick={() => setFilterMode('date')}
+                className={`px-4 py-2 text-[10px] uppercase tracking-widest transition-all ${filterMode === 'date' ? 'bg-secondary text-primary-dark font-black' : 'text-white/40 hover:text-white'}`}
+              >
+                By Date
+              </button>
+            </div>
+
+            {/* Sub-filters based on mode */}
+            {filterMode === 'recent' ? (
+              <div className="flex gap-2">
+                {[12, 24, 48, 72].map(h => (
+                  <button 
+                    key={h}
+                    onClick={() => setRecentHours(h)}
+                    className={`w-10 h-10 flex items-center justify-center text-[10px] border transition-all ${recentHours === h ? 'border-secondary text-secondary bg-secondary/5' : 'border-white/10 text-white/40 hover:border-white/30 hover:text-white'}`}
+                  >
+                    {h}h
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <input 
+                type="date" 
+                className="bg-white/5 border border-white/10 p-3 text-white focus:outline-none focus:border-secondary rounded-sm text-sm" 
+                value={selectedDate} 
+                onChange={(e) => {setSelectedDate(e.target.value); setNewData({...newData, date: e.target.value})}} 
+              />
+            )}
+
+            <div className="h-8 w-[1px] bg-white/10 hidden md:block mx-2"></div>
+
             <button onClick={() => setIsAdding(true)} className="p-3 bg-secondary text-primary-dark hover:bg-white transition-all rounded-sm flex items-center gap-2 text-xs font-bold uppercase tracking-widest">
               <Plus size={16} /> New
             </button>
             <button onClick={() => mutate()} className="p-3 bg-white/5 border border-white/10 text-white/60 hover:text-secondary hover:border-secondary transition-all rounded-sm">
               <RefreshCcw size={18} className={isLoading ? 'animate-spin' : ''} />
             </button>
-            <input type="date" className="bg-white/5 border border-white/10 p-3 text-white focus:outline-none focus:border-secondary rounded-sm" value={selectedDate} onChange={(e) => {setSelectedDate(e.target.value); setNewData({...newData, date: e.target.value})}} />
             <button onClick={handleLogout} className="p-3 text-white/30 hover:text-red-400 transition-colors"><LogOut size={18} /></button>
           </div>
         </div>
