@@ -29,10 +29,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             />
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-serif text-white mb-6 tracking-tight leading-none">
+          <h1 className="text-5xl sm:text-6xl md:text-8xl font-serif text-white mb-6 tracking-tight leading-none">
             {hero.title}
           </h1>
-          <p className="text-secondary uppercase tracking-[0.6em] text-sm mb-12 font-medium">
+          <p className="text-secondary uppercase tracking-[0.3em] sm:tracking-[0.6em] text-[10px] sm:text-sm mb-12 font-medium">
             {hero.subtitle}
           </p>
           
@@ -45,7 +45,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
         {/* 底部装饰线 */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
-          <div className="w-[1px] h-20 bg-gradient-to-b from-transparent to-secondary"></div>
+          <div className="w-[1px] h-12 md:h-20 bg-gradient-to-b from-transparent to-secondary"></div>
           <span className="text-[10px] uppercase tracking-[0.5em] text-secondary">{t('scroll')}</span>
         </div>
       </section>
