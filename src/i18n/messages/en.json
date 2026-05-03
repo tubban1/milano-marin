@@ -1,6 +1,67 @@
 {
   "HomePage": {
     "title": "Welcome to Milano Marin",
-    "description": "The essence of Italian cuisine in the heart of the city."
+    "description": "The essence of Italian cuisine in the heart of the city.",
+    "explore_menu": "Explore Menu",
+    "scroll": "Scroll",
+    "view_drinks_pdf": "View Full Drink List (PDF)",
+    "view_menu_pdf": "View Full Menu (PDF)",
+    "our_passion": "Our Passion",
+    "passion_text": "\"At Milano Marin, we believe that food is more than just sustenance; it is a celebration of life. Every dish is a tribute to the timeless traditions of Italy, crafted with ingredients sourced with the same love and care our grandmothers once used in their kitchens.\"",
+    "contact_title": "Contact",
+    "footer_tagline": "Milano Marin — Authentic Passion"
+  },
+  "Nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "reservation": "Reservation",
+    "about": "Our Story",
+    "contact": "Contact"
+  },
+  "Reservation": {
+    "title": "Reservation",
+    "subtitle": "Book your table at Milano Marin",
+    "guests": "Guests",
+    "date": "Date",
+    "time": "Time",
+    "person": "Person",
+    "people": "People",
+    "find_table": "Find a Table",
+    "details": "Details",
+    "last_name": "Last Name *",
+    "first_name": "First Name *",
+    "phone": "Phone *",
+    "email": "Email *",
+    "notes": "Notes (Allergies, vegetarian, etc.)",
+    "notes_placeholder": "Ex: No smoking area, vegetarian options...",
+    "confirm": "Confirm Reservation",
+    "success": "Reservation Successful!",
+    "terms": "By confirming, you agree to our booking terms. A confirmation email will be sent shortly."
+  },
+  "Admin": {
+    "reservations": "Reservations",
+    "dashboard": "Management Dashboard",
+    "add_reservation": "Add Reservation",
+    "logout": "Logout",
+    "recent": "Recent",
+    "by_date": "By Date",
+    "last_name": "Last Name",
+    "first_name": "First Name",
+    "date": "Date",
+    "time": "Time",
+    "guests": "Guests",
+    "phone": "Phone",
+    "email": "Email",
+    "notes": "Notes",
+    "cancel": "Cancel",
+    "confirm": "Confirm Reservation",
+    "save_changes": "Save Changes",
+    "loading": "Loading...",
+    "no_reservations": "No reservations",
+    "delete_confirm": "Are you sure you want to delete this reservation?",
+    "login_title": "Admin Login",
+    "access_token": "Access Token",
+    "enter_dashboard": "Enter Dashboard",
+    "new_reservation": "New Reservation"
   }
 }

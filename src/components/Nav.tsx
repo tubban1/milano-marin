@@ -1,29 +1,32 @@
 import Link from 'next/link';
-import { Phone, Mail, Camera } from 'lucide-react';
+import { Phone, Mail } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
 
-export default function Nav({ locale }: { locale: string }) {
+export default async function Nav({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: 'Nav' });
+
   return (
     <nav className="nav-blur fixed top-0 left-0 w-full z-50 transition-all duration-500">
       <div className="max-w-7xl mx-auto px-8 py-5 flex justify-between items-center">
         <div className="flex gap-10 items-center">
           <Link href={`/${locale}#home`} className="group relative text-xs uppercase tracking-[0.3em] font-medium text-accent/70 hover:text-secondary transition-colors">
-            Home
+            {t('home')}
             <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-secondary transition-all group-hover:w-full"></span>
           </Link>
           <Link href={`/${locale}#menu`} className="group relative text-xs uppercase tracking-[0.3em] font-medium text-accent/70 hover:text-secondary transition-colors">
-            Menu
+            {t('menu')}
             <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-secondary transition-all group-hover:w-full"></span>
           </Link>
           <Link href={`/${locale}#reservation`} className="group relative text-xs uppercase tracking-[0.3em] font-medium text-accent/70 hover:text-secondary transition-colors">
-            Reservation
+            {t('reservation')}
             <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-secondary transition-all group-hover:w-full"></span>
           </Link>
           <Link href={`/${locale}#about`} className="group relative text-xs uppercase tracking-[0.3em] font-medium text-accent/70 hover:text-secondary transition-colors">
-            Our Story
+            {t('about')}
             <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-secondary transition-all group-hover:w-full"></span>
           </Link>
           <Link href={`/${locale}#contact`} className="group relative text-xs uppercase tracking-[0.3em] font-medium text-accent/70 hover:text-secondary transition-colors">
-            Contact
+            {t('contact')}
             <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-secondary transition-all group-hover:w-full"></span>
           </Link>
         </div>

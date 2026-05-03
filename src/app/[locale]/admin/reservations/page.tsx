@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { Clock, Users, Phone, Mail, FileText, Trash2, Edit2, Calendar, Filter, ChevronRight } from 'lucide-react';
+import { Clock, Users, Phone, Mail, FileText, Trash2, Edit2, Calendar, Filter } from 'lucide-react';
 import useSWR from 'swr';
 
 // 修正后的 Fetcher：包含鉴权报头
@@ -28,6 +28,8 @@ const INITIAL_FORM = {
 };
 
 export default function AdminReservations() {
+  const locale = useLocale();
+  const t = useTranslations('Admin');
   const [token, setToken] = useState<string>('');
   const [isAuth, setIsAuth] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
@@ -102,7 +104,7 @@ export default function AdminReservations() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this reservation?')) return;
+    if (!confirm(t('delete_confirm'))) return;
     try {
       const res = await fetch(`/api/admin/reservations?id=${id}`, { 
         method: 'DELETE',
@@ -139,19 +141,19 @@ export default function AdminReservations() {
     return (
       <div className="min-h-screen bg-primary-dark flex items-center justify-center p-6">
         <div className="glass-card p-8 w-full max-w-md">
-          <h2 className="text-2xl font-serif text-secondary mb-6 text-center tracking-widest uppercase">Admin Login</h2>
+          <h2 className="text-2xl font-serif text-secondary mb-6 text-center tracking-widest uppercase">{t('login_title')}</h2>
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
               <input
                 type="password"
                 className="w-full bg-white/5 border border-white/10 p-4 text-white placeholder:text-white/20 focus:outline-none focus:border-secondary"
-                placeholder="Access Token"
+                placeholder={t('access_token')}
                 value={token}
                 onChange={(e) => setToken(e.target.value)}
               />
             </div>
             <button type="submit" className="w-full bg-secondary text-primary-dark py-4 font-bold uppercase tracking-widest hover:bg-white transition-colors">
-              Enter Dashboard
+              {t('enter_dashboard')}
             </button>
           </form>
         </div>
@@ -159,7 +161,6 @@ export default function AdminReservations() {
     );
   }
 
-  // 确保 reservations 是数组
   const reservationList = Array.isArray(reservations) ? reservations : [];
 
   return (
@@ -167,15 +168,15 @@ export default function AdminReservations() {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
           <div>
-            <h1 className="text-3xl font-serif text-white tracking-widest uppercase mb-2">Reservations</h1>
-            <p className="text-white/40 text-sm tracking-widest">Management Dashboard</p>
+            <h1 className="text-3xl font-serif text-white tracking-widest uppercase mb-2">{t('reservations')}</h1>
+            <p className="text-white/40 text-sm tracking-widest">{t('dashboard')}</p>
           </div>
           <div className="flex gap-4">
             <button onClick={() => setIsAdding(true)} className="px-6 py-2 bg-secondary text-primary-dark text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">
-              Add Reservation
+              {t('add_reservation')}
             </button>
             <button onClick={handleLogout} className="px-6 py-2 border border-white/10 text-white/40 text-xs uppercase tracking-widest hover:text-white hover:border-white transition-all">
-              Logout
+              {t('logout')}
             </button>
           </div>
         </div>
@@ -186,13 +187,13 @@ export default function AdminReservations() {
               onClick={() => setFilterMode('recent')}
               className={`px-6 py-2 text-[10px] uppercase tracking-widest transition-all ${filterMode === 'recent' ? 'bg-secondary text-primary-dark font-bold' : 'text-white/40 hover:text-white'}`}
             >
-              Recent
+              {t('recent')}
             </button>
             <button 
               onClick={() => setFilterMode('date')}
               className={`px-6 py-2 text-[10px] uppercase tracking-widest transition-all ${filterMode === 'date' ? 'bg-secondary text-primary-dark font-bold' : 'text-white/40 hover:text-white'}`}
             >
-              By Date
+              {t('by_date')}
             </button>
           </div>
 
@@ -224,35 +225,33 @@ export default function AdminReservations() {
         <div className="space-y-4">
           {isAdding && (
             <div className="glass-card p-8 animate-reveal border-l-2 border-secondary">
-              <h3 className="text-white uppercase tracking-widest text-xs mb-6 flex items-center gap-2"><Filter size={14} className="text-secondary" /> New Reservation</h3>
+              <h3 className="text-white uppercase tracking-widest text-xs mb-6 flex items-center gap-2"><Filter size={14} className="text-secondary" /> {t('new_reservation')}</h3>
               <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <input className="bg-white/5 border border-white/10 p-3 text-white text-sm" placeholder="Last Name" value={newData.lastName} onChange={e => setNewData({...newData, lastName: e.target.value})} required />
-                <input className="bg-white/5 border border-white/10 p-3 text-white text-sm" placeholder="First Name" value={newData.firstName} onChange={e => setNewData({...newData, firstName: e.target.value})} required />
+                <input className="bg-white/5 border border-white/10 p-3 text-white text-sm" placeholder={t('last_name')} value={newData.lastName} onChange={e => setNewData({...newData, lastName: e.target.value})} required />
+                <input className="bg-white/5 border border-white/10 p-3 text-white text-sm" placeholder={t('first_name')} value={newData.firstName} onChange={e => setNewData({...newData, firstName: e.target.value})} required />
                 <input className="bg-white/5 border border-white/10 p-3 text-white text-sm" type="date" value={newData.date} onChange={e => setNewData({...newData, date: e.target.value})} required />
                 <input className="bg-white/5 border border-white/10 p-3 text-white text-sm" type="time" value={newData.time} onChange={e => setNewData({...newData, time: e.target.value})} required />
-                <input className="bg-white/5 border border-white/10 p-3 text-white text-sm" type="number" placeholder="Guests" value={newData.guests} onChange={e => setNewData({...newData, guests: parseInt(e.target.value)})} required />
-                <input className="bg-white/5 border border-white/10 p-3 text-white text-sm" placeholder="Phone" value={newData.phone} onChange={e => setNewData({...newData, phone: e.target.value})} required />
-                <input className="bg-white/5 border border-white/10 p-3 text-white text-sm" placeholder="Email" value={newData.email} onChange={e => setNewData({...newData, email: e.target.value})} />
-                <input className="bg-white/5 border border-white/10 p-3 text-white text-sm md:col-span-2" placeholder="Notes" value={newData.notes} onChange={e => setNewData({...newData, notes: e.target.value})} />
+                <input className="bg-white/5 border border-white/10 p-3 text-white text-sm" type="number" placeholder={t('guests')} value={newData.guests} onChange={e => setNewData({...newData, guests: parseInt(e.target.value)})} required />
+                <input className="bg-white/5 border border-white/10 p-3 text-white text-sm" placeholder={t('phone')} value={newData.phone} onChange={e => setNewData({...newData, phone: e.target.value})} required />
+                <input className="bg-white/5 border border-white/10 p-3 text-white text-sm" placeholder={t('email')} value={newData.email} onChange={e => setNewData({...newData, email: e.target.value})} />
+                <input className="bg-white/5 border border-white/10 p-3 text-white text-sm md:col-span-2" placeholder={t('notes')} value={newData.notes} onChange={e => setNewData({...newData, notes: e.target.value})} />
                 <div className="md:col-span-3 flex justify-end gap-4 mt-2">
-                  <button type="button" onClick={() => setIsAdding(false)} className="text-white/40 uppercase tracking-widest text-[10px] hover:text-white">Cancel</button>
-                  <button type="submit" className="bg-secondary text-primary-dark px-8 py-3 font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-colors">Confirm Reservation</button>
+                  <button type="button" onClick={() => setIsAdding(false)} className="text-white/40 uppercase tracking-widest text-[10px] hover:text-white">{t('cancel')}</button>
+                  <button type="submit" className="bg-secondary text-primary-dark px-8 py-3 font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-colors">{t('confirm')}</button>
                 </div>
               </form>
             </div>
           )}
 
           {isLoading ? (
-            <div className="py-20 text-center text-white/20 uppercase tracking-widest text-xs animate-pulse">Loading...</div>
+            <div className="py-20 text-center text-white/20 uppercase tracking-widest text-xs animate-pulse">{t('loading')}</div>
           ) : reservationList.length === 0 && !isAdding ? (
-            <div className="py-20 text-center glass-card text-white/20 uppercase tracking-widest text-xs">No reservations</div>
+            <div className="py-20 text-center glass-card text-white/20 uppercase tracking-widest text-xs">{t('no_reservations')}</div>
           ) : (
             reservationList.map((res: any) => {
               const now = new Date().getTime();
-              // 使用后端传回的 Unix 时间戳 (秒转毫秒)
               const createdAt = res.created_at_ts * 1000;
               const diffInMinutes = (now - createdAt) / (1000 * 60);
-              
               const isNew = diffInMinutes > -10 && diffInMinutes < 60;
               
               return (
@@ -261,7 +260,7 @@ export default function AdminReservations() {
                     <div className="absolute top-0 right-0">
                       <div className="bg-secondary text-primary-dark text-[8px] font-black uppercase tracking-[0.2em] px-3 py-1.5 rounded-bl-sm flex items-center gap-1 shadow-xl">
                         <span className="w-1 h-1 bg-primary-dark rounded-full animate-ping"></span>
-                        New Reservation
+                        {t('new_reservation')}
                       </div>
                     </div>
                   )}
@@ -272,20 +271,20 @@ export default function AdminReservations() {
                       <input className="bg-white/10 p-2 text-white text-sm" type="time" value={editData.time} onChange={e => setEditData({...editData, time: e.target.value})} />
                       <input className="bg-white/10 p-2 text-white text-sm" type="number" value={editData.guests} onChange={e => setEditData({...editData, guests: e.target.value})} />
                       <div className="md:col-span-4 flex justify-end gap-2">
-                        <button onClick={() => setEditingId(null)} className="px-4 py-2 text-xs text-white/40 uppercase tracking-widest hover:text-white">Cancel</button>
-                        <button onClick={handleSaveEdit} className="px-6 py-2 bg-secondary text-primary-dark text-xs font-bold uppercase tracking-widest hover:bg-white">Save Changes</button>
+                        <button onClick={() => setEditingId(null)} className="px-4 py-2 text-xs text-white/40 uppercase tracking-widest hover:text-white">{t('cancel')}</button>
+                        <button onClick={handleSaveEdit} className="px-6 py-2 bg-secondary text-primary-dark text-xs font-bold uppercase tracking-widest hover:bg-white">{t('save_changes')}</button>
                       </div>
                     </div>
                   ) : (
                     <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
                       <div className="flex flex-col items-start min-w-[120px] gap-1">
                         <div className="flex items-center gap-2"><Clock className="text-secondary" size={16} /><span className="text-xl font-serif text-white">{res.time.substring(0, 5)}</span></div>
-                        <div className="flex items-center gap-2 text-[10px] text-white/40 uppercase tracking-widest ml-[22px]">{new Date(res.date).toLocaleDateString('it-IT')}</div>
+                        <div className="flex items-center gap-2 text-[10px] text-white/40 uppercase tracking-widest ml-[22px]">{new Date(res.date).toLocaleDateString(locale === 'fr' ? 'fr-FR' : 'it-IT')}</div>
                       </div>
                       <div className="flex-1">
                         <h4 className="text-lg text-white font-medium mb-1">{res.last_name} {res.first_name}</h4>
                         <div className="flex flex-wrap gap-4 text-xs text-white/40">
-                          <span className="flex items-center gap-1"><Users size={12} /> {res.guests} Guests</span>
+                          <span className="flex items-center gap-1"><Users size={12} /> {res.guests} {t('guests')}</span>
                           <span className="flex items-center gap-1"><Phone size={12} /> {res.phone}</span>
                           <span className="flex items-center gap-1"><Mail size={12} /> {res.email}</span>
                         </div>

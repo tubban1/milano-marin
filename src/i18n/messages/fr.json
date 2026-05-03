@@ -1,6 +1,67 @@
 {
   "HomePage": {
     "title": "Bienvenue à Milano Marin",
-    "description": "L'essence de la cuisine italienne au cœur de la ville."
+    "description": "L'essence de la cuisine italienne au cœur de la ville.",
+    "explore_menu": "Explorer le Menu",
+    "scroll": "Défilement",
+    "view_drinks_pdf": "Voir la Carte des Boissons (PDF)",
+    "view_menu_pdf": "Voir le Menu Complet (PDF)",
+    "our_passion": "Notre Passion",
+    "passion_text": "\"Chez Milano Marin, nous pensons que la nourriture est plus qu'une simple subsistance ; c'est une célébration de la vie. Chaque plat est un hommage aux traditions intemporelles de l'Italie, élaboré avec des ingrédients sourcés avec le même amour et le même soin que nos grands-mères utilisaient autrefois dans leurs cuisines.\"",
+    "contact_title": "Contact",
+    "footer_tagline": "Milano Marin — Passion Authentique"
+  },
+  "Nav": {
+    "home": "Accueil",
+    "menu": "Carte",
+    "reservation": "Réservation",
+    "about": "Notre Histoire",
+    "contact": "Contact"
+  },
+  "Reservation": {
+    "title": "Réservation",
+    "subtitle": "Réservez votre table chez Milano Marin",
+    "guests": "Personnes",
+    "date": "Date",
+    "time": "Heure",
+    "person": "Personne",
+    "people": "Personnes",
+    "find_table": "Trouver une Table",
+    "details": "Détails",
+    "last_name": "Nom *",
+    "first_name": "Prénom *",
+    "phone": "Téléphone *",
+    "email": "E-mail *",
+    "notes": "Notes (Allergies, végétarien, etc.)",
+    "notes_placeholder": "Ex : Pas de zone fumeur, options végétariennes...",
+    "confirm": "Confirmer la Réservation",
+    "success": "Réservation Réussie !",
+    "terms": "En confirmant, vous acceptez nos conditions de réservation. Un e-mail de confirmation vous sera envoyé sous peu."
+  },
+  "Admin": {
+    "reservations": "Réservations",
+    "dashboard": "Tableau de Bord",
+    "add_reservation": "Ajouter une Réservation",
+    "logout": "Déconnexion",
+    "recent": "Récent",
+    "by_date": "Par Date",
+    "last_name": "Nom",
+    "first_name": "Prénom",
+    "date": "Date",
+    "time": "Heure",
+    "guests": "Personnes",
+    "phone": "Téléphone",
+    "email": "E-mail",
+    "notes": "Notes",
+    "cancel": "Annuler",
+    "confirm": "Confirmer la Réservation",
+    "save_changes": "Enregistrer",
+    "loading": "Chargement...",
+    "no_reservations": "Aucune réservation",
+    "delete_confirm": "Êtes-vous sûr de vouloir supprimer cette réservation ?",
+    "login_title": "Connexion Admin",
+    "access_token": "Jeton d'accès",
+    "enter_dashboard": "Entrer dans le Tableau",
+    "new_reservation": "Nouvelle Réservation"
   }
 }

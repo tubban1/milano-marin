@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Calendar, Clock, X, Check, Loader2, ChevronRight } from 'lucide-react';
+import { Users, Calendar, Clock, X, Check, Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 export default function ReservationSystem() {
+  const t = useTranslations('Reservation');
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -50,9 +52,9 @@ export default function ReservationSystem() {
     <section id="reservation" className="relative py-32 px-6 overflow-hidden">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-serif text-white mb-6 uppercase tracking-widest">Reservation</h2>
+          <h2 className="text-4xl md:text-6xl font-serif text-white mb-6 uppercase tracking-widest">{t('title')}</h2>
           <div className="w-24 h-1 bg-secondary mx-auto mb-8"></div>
-          <p className="text-accent/60 uppercase tracking-[0.3em] text-xs">Book your table at Milano Marin</p>
+          <p className="text-accent/60 uppercase tracking-[0.3em] text-xs">{t('subtitle')}</p>
         </div>
 
         {/* Main Entry Bar */}
@@ -60,21 +62,25 @@ export default function ReservationSystem() {
           <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
             <div className="space-y-3">
               <label className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-secondary font-bold">
-                <Users size={14} /> Guests
+                <Users size={14} /> {t('guests')}
               </label>
               <select 
                 value={formData.guests}
                 onChange={(e) => setFormData({...formData, guests: e.target.value})}
                 className="w-full bg-transparent border-b border-white/10 py-2 text-white focus:outline-none focus:border-secondary transition-colors cursor-pointer"
               >
-                {[1,2,3,4,5,6,7,8].map(n => <option key={n} value={n} className="bg-deep-black">{n} {n === 1 ? 'Person' : 'People'}</option>)}
-                <option value="9+" className="bg-deep-black">9+ People</option>
+                {[1,2,3,4,5,6,7,8].map(n => (
+                  <option key={n} value={n} className="bg-deep-black">
+                    {n} {n === 1 ? t('person') : t('people')}
+                  </option>
+                ))}
+                <option value="9+" className="bg-deep-black">9+ {t('people')}</option>
               </select>
             </div>
 
             <div className="space-y-3">
               <label className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-secondary font-bold">
-                <Calendar size={14} /> Date
+                <Calendar size={14} /> {t('date')}
               </label>
               <input 
                 type="date"
@@ -87,15 +93,15 @@ export default function ReservationSystem() {
 
             <div className="space-y-3">
               <label className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-secondary font-bold">
-                <Clock size={14} /> Time
+                <Clock size={14} /> {t('time')}
               </label>
               <select 
                 value={formData.time}
                 onChange={(e) => setFormData({...formData, time: e.target.value})}
                 className="w-full bg-transparent border-b border-white/10 py-2 text-white focus:outline-none focus:border-secondary transition-colors cursor-pointer"
               >
-                {['11:30', '12:00', '12:30', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'].map(t => (
-                  <option key={t} value={t} className="bg-deep-black">{t}</option>
+                {['11:30', '12:00', '12:30', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00'].map(v => (
+                  <option key={v} value={v} className="bg-deep-black">{v}</option>
                 ))}
               </select>
             </div>
@@ -105,7 +111,7 @@ export default function ReservationSystem() {
             onClick={() => setIsOpen(true)}
             className="w-full md:w-auto bg-secondary text-primary-dark px-12 py-4 uppercase tracking-[0.3em] text-xs font-bold hover:bg-white transition-all duration-500 shadow-xl"
           >
-            Find a Table
+            {t('find_table')}
           </button>
         </div>
       </div>
@@ -133,7 +139,7 @@ export default function ReservationSystem() {
             >
               <div className="p-10">
                 <div className="flex justify-between items-center mb-12">
-                  <h3 className="text-2xl font-serif text-white uppercase tracking-widest">Details</h3>
+                  <h3 className="text-2xl font-serif text-white uppercase tracking-widest">{t('details')}</h3>
                   <button onClick={() => setIsOpen(false)} className="text-white/40 hover:text-white">
                     <X size={24} />
                   </button>
@@ -142,7 +148,7 @@ export default function ReservationSystem() {
                 <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="grid grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-white/40">Last Name *</label>
+                      <label className="text-[10px] uppercase tracking-widest text-white/40">{t('last_name')}</label>
                       <input 
                         required
                         className="w-full bg-white/5 border border-white/10 p-3 text-white focus:outline-none focus:border-secondary"
@@ -151,7 +157,7 @@ export default function ReservationSystem() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-widest text-white/40">First Name *</label>
+                      <label className="text-[10px] uppercase tracking-widest text-white/40">{t('first_name')}</label>
                       <input 
                         required
                         className="w-full bg-white/5 border border-white/10 p-3 text-white focus:outline-none focus:border-secondary"
@@ -162,7 +168,7 @@ export default function ReservationSystem() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">Phone *</label>
+                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t('phone')}</label>
                     <input 
                       required
                       type="tel"
@@ -173,7 +179,7 @@ export default function ReservationSystem() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">Email *</label>
+                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t('email')}</label>
                     <input 
                       required
                       type="email"
@@ -184,10 +190,10 @@ export default function ReservationSystem() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-widest text-white/40">Notes (Allergies, vegetarian, etc.)</label>
+                    <label className="text-[10px] uppercase tracking-widest text-white/40">{t('notes')}</label>
                     <textarea 
                       rows={4}
-                      placeholder="Ex: No smoking area, vegetarian options..."
+                      placeholder={t('notes_placeholder')}
                       className="w-full bg-white/5 border border-white/10 p-3 text-white focus:outline-none focus:border-secondary resize-none"
                       value={formData.notes}
                       onChange={(e) => setFormData({...formData, notes: e.target.value})}
@@ -199,15 +205,14 @@ export default function ReservationSystem() {
                       disabled={isSubmitting || isSuccess}
                       className="w-full bg-secondary text-primary-dark py-5 uppercase tracking-[0.4em] text-xs font-black flex items-center justify-center gap-3 hover:bg-white transition-all disabled:opacity-50"
                     >
-                      {isSubmitting ? <Loader2 className="animate-spin" /> : isSuccess ? <Check /> : 'Confirm Reservation'}
+                      {isSubmitting ? <Loader2 className="animate-spin" /> : isSuccess ? <Check /> : t('confirm')}
                     </button>
-                    {isSuccess && <p className="text-center text-secondary text-xs mt-4 animate-bounce">Reservation Successful!</p>}
+                    {isSuccess && <p className="text-center text-secondary text-xs mt-4 animate-bounce">{t('success')}</p>}
                   </div>
                 </form>
 
                 <div className="mt-12 pt-12 border-t border-white/5 text-[10px] text-white/20 uppercase tracking-[0.2em] leading-loose text-center">
-                  By confirming, you agree to our booking terms.<br />
-                  A confirmation email will be sent shortly.
+                  {t('terms')}
                 </div>
               </div>
             </motion.div>

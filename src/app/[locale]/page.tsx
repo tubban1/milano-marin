@@ -4,11 +4,13 @@ import { Locale } from '@/i18n/config';
 import { FileText, MapPin, Phone, Mail } from 'lucide-react';
 import LiquidBackground from '@/components/LiquidBackground';
 import ReservationSystem from '@/components/ReservationSystem';
+import { getTranslations } from 'next-intl/server';
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const content = await readPageContent('home', locale, homeDefaults(locale as Locale));
   const { hero, drinkMenu, foodMenu } = content;
+  const t = await getTranslations({ locale, namespace: 'HomePage' });
 
   return (
     <div className="relative min-h-screen">
@@ -36,7 +38,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           
           <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
             <a href="#menu" className="text-white/60 hover:text-secondary uppercase tracking-[0.3em] text-xs transition-colors border-b border-white/10 pb-1">
-              Explore Menu
+              {t('explore_menu')}
             </a>
           </div>
         </div>
@@ -44,7 +46,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         {/* 底部装饰线 */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-30">
           <div className="w-[1px] h-20 bg-gradient-to-b from-transparent to-secondary"></div>
-          <span className="text-[10px] uppercase tracking-[0.5em] text-secondary">Scroll</span>
+          <span className="text-[10px] uppercase tracking-[0.5em] text-secondary">{t('scroll')}</span>
         </div>
       </section>
 
@@ -80,7 +82,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                     target="_blank" 
                     className="inline-flex items-center gap-3 text-secondary hover:text-white border border-secondary/30 hover:border-secondary px-8 py-3 transition-all uppercase tracking-widest text-xs font-bold"
                   >
-                    <FileText size={16} /> View Full Drink List (PDF)
+                    <FileText size={16} /> {t('view_drinks_pdf')}
                   </a>
                 </div>
               </div>
@@ -130,7 +132,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                     target="_blank" 
                     className="inline-flex items-center gap-3 text-secondary hover:text-white border border-secondary/30 hover:border-secondary px-8 py-3 transition-all uppercase tracking-widest text-xs font-bold"
                   >
-                    <FileText size={16} /> View Full Menu (PDF)
+                    <FileText size={16} /> {t('view_menu_pdf')}
                   </a>
                 </div>
               </div>
@@ -143,11 +145,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {/* ABOUT SECTION */}
       <section id="about" className="py-40 bg-deep-black/50 overflow-hidden">
         <div className="max-w-4xl mx-auto px-6 text-center space-y-12">
-          <h2 className="text-5xl font-serif text-gold-gradient uppercase tracking-widest">Our Passion</h2>
+          <h2 className="text-5xl font-serif text-gold-gradient uppercase tracking-widest">{t('our_passion')}</h2>
           <p className="text-xl text-accent/70 font-serif leading-relaxed italic">
-            "At Milano Marin, we believe that food is more than just sustenance; it is a celebration of life. 
-            Every dish is a tribute to the timeless traditions of Italy, crafted with ingredients sourced 
-            with the same love and care our grandmothers once used in their kitchens."
+            {t('passion_text')}
           </p>
           <div className="flex justify-center gap-4">
             <div className="w-2 h-2 rounded-full bg-secondary"></div>
@@ -160,7 +160,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {/* CONTACT SECTION */}
       <section id="contact" className="border-t border-white/5 py-32 px-6">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-serif text-white mb-12 uppercase tracking-wider animate-reveal">Contact</h2>
+          <h2 className="text-4xl md:text-5xl font-serif text-white mb-12 uppercase tracking-wider animate-reveal">{t('contact_title')}</h2>
           <div className="glass-card flex flex-col items-center gap-12 animate-reveal">
             <div className="flex flex-col items-center gap-4">
               <MapPin className="text-secondary" size={24} />
@@ -178,21 +178,17 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               </div>
               
               <div className="flex flex-col items-center gap-4">
-                <Mail className="text-secondary" size={24} />
-                <a href="mailto:info@milano-marin.ch" className="text-lg text-accent/80 hover:text-secondary transition-colors font-light tracking-wide">
-                  info@milano-marin.ch
+                <MapPin className="text-secondary" size={24} />
+                <a 
+                  href="https://www.google.com/maps/dir/?api=1&destination=Route+des+Marais+10+2074+Marin-Epagnier" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-lg text-accent/80 hover:text-secondary transition-colors font-light tracking-wide"
+                >
+                  Google Maps
                 </a>
               </div>
             </div>
-            
-            <a 
-              href="https://www.google.com/maps/dir/?api=1&destination=Route+des+Marais+10+2074+Marin-Epagnier" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 text-secondary border border-secondary/30 px-10 py-4 hover:bg-secondary hover:text-black transition-all duration-500 tracking-[0.2em] uppercase text-xs font-bold"
-            >
-              Google Maps
-            </a>
           </div>
         </div>
       </section>
@@ -204,7 +200,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           className="w-16 h-auto mx-auto mb-8 opacity-20 grayscale brightness-110"
         />
         <p className="text-[10px] uppercase tracking-[0.8em] text-accent/30 font-light">
-          Milano Marin — Authentic Passion
+          {t('footer_tagline')}
         </p>
       </footer>
     </div>
