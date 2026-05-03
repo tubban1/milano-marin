@@ -11,12 +11,29 @@ export const homeDefaults = (locale: Locale) => ({
     heroImage: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80'
   },
   drinkMenu: {
-    title: locale === 'fr' ? 'CARTE DES BOISSONS' : 'DRINK MENU',
-    subtitle: locale === 'fr' ? 'Vins, spiritueux et bières' : 'Spirits, wine, and beer',
+    title: locale === 'fr' ? 'SÉLECTION DE BOISSONS' : 'DRINK SELECTION',
+    subtitle: locale === 'fr' ? 'Vins et spiritueux' : 'Fine wines and spirits',
     items: [
-      { name: 'Negroni', price: '€12', description: 'Gin, Campari, Vermouth Rosso.' },
-      { name: 'Aperol Spritz', price: '€10', description: 'Aperol, Prosecco, Soda.' },
-      { name: 'Vino Rosso', price: '€8', description: 'Sélection de vins rouges italiens.' }
+      { 
+        name: 'Prosecco Casa Canevel Brut', 
+        price: '8.00 CHF', 
+        description: locale === 'fr' ? 'Vins au verre, 1 dl' : 'Classic sparkling wine by the glass, 1 dl' 
+      },
+      { 
+        name: 'Estival Bouvet - Jabloir', 
+        price: '9.00 CHF', 
+        description: locale === 'fr' ? 'Vin blanc de Neuchâtel, 1 dl' : 'Local white wine from Neuchâtel, 1 dl' 
+      },
+      { 
+        name: 'Sauvignon - Tenuta Valloccata', 
+        price: '50.00 CHF', 
+        description: locale === 'fr' ? 'Toscana Bianco, 75 cl' : 'Premium Sauvignon from Tuscany, 75 cl' 
+      },
+      { 
+        name: 'Brunello di Montalcino - Banfi', 
+        price: '86.00 CHF', 
+        description: locale === 'fr' ? 'Le roi des vins toscans, 75 cl' : 'The king of Tuscan wines, 75 cl' 
+      }
     ],
     images: [
       'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=800',
@@ -24,12 +41,29 @@ export const homeDefaults = (locale: Locale) => ({
     ]
   },
   foodMenu: {
-    title: locale === 'fr' ? 'CARTE DES PLATS' : 'FOOD MENU',
-    subtitle: locale === 'fr' ? 'Entrées, plats et pâtes' : 'Entrees, mains, and pasta',
+    title: locale === 'fr' ? 'DÉLICES CULINAIRES' : 'CULINARY DELIGHTS',
+    subtitle: locale === 'fr' ? 'Antipasti et plats principaux' : 'Antipasti and main courses',
     items: [
-      { name: 'Lasagna alla Bolognese', price: '€18', description: 'Pâtes fraîches, sauce ragù, béchamel.' },
-      { name: 'Pizza Margherita', price: '€14', description: 'Tomate, mozzarella fior di latte, basilic.' },
-      { name: 'Risotto ai Funghi', price: '€20', description: 'Riz arborio, champignons sauvages, parmesan.' }
+      { 
+        name: 'Tagliere Parmigiano', 
+        price: '24.00 CHF', 
+        description: locale === 'fr' ? 'Jambon de Parme, Coppa, Salami et Parmesan 24 mois' : 'Parma Ham, Coppa, Salami and 24-month aged Parmesan' 
+      },
+      { 
+        name: 'Vitello Tonnato', 
+        price: '25.00 CHF', 
+        description: locale === 'fr' ? 'Veau cuit à basse température, sauce au thon' : 'Slow-cooked veal with traditional tuna sauce' 
+      },
+      { 
+        name: 'Spaghettone aux Vongole', 
+        price: '30.00 CHF', 
+        description: locale === 'fr' ? 'Vin blanc, ail, persil et palourdes fraîches' : 'Classic white wine, garlic, parsley and fresh clams' 
+      },
+      { 
+        name: 'Gnocchi Farcis au Sanglier', 
+        price: '28.00 CHF', 
+        description: locale === 'fr' ? 'Farce au sanglier, sauce sauge et parmesan' : 'Wild boar stuffing, sage sauce and parmesan' 
+      }
     ],
     images: [
       'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800',
@@ -43,7 +77,7 @@ export const homeDefaults = (locale: Locale) => ({
     },
     {
       title: locale === 'fr' ? 'Qualité' : 'Quality',
-      description: locale === 'fr' ? 'Des ingrédients frais ed sélectionnés.' : 'Fresh and selected ingredients.'
+      description: locale === 'fr' ? 'Des ingrédients frais et sélectionnés.' : 'Fresh and selected ingredients.'
     }
   ]
 });

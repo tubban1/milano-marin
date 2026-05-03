@@ -60,19 +60,19 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           {/* DRINK SECTION */}
           <section className="grid lg:grid-cols-12 gap-16 items-center">
             <div className="lg:col-span-5 space-y-8 order-2 lg:order-1">
-              <div className="glass-card">
-                <div className="mb-10 text-center">
-                  <h2 className="text-4xl font-serif text-secondary mb-2 uppercase tracking-tighter">{drinkMenu.title}</h2>
-                  <div className="w-20 h-[1px] bg-secondary/30 mx-auto mb-4"></div>
+              <div className="glass-card p-10 md:p-16">
+                <div className="mb-12 text-center">
+                  <h2 className="text-3xl font-serif text-secondary mb-3 uppercase tracking-[0.2em]">{drinkMenu.title}</h2>
+                  <div className="w-12 h-[1px] bg-secondary/30 mx-auto mb-4"></div>
                 </div>
-                <ul className="space-y-4 mb-10">
+                <ul className="space-y-8 mb-12">
                   {drinkMenu.items.map((item: any, i: number) => (
-                    <li key={i} className="menu-item group">
-                      <div className="flex justify-between items-baseline mb-1">
-                        <span className="text-lg font-serif text-accent group-hover:text-secondary transition-colors">{item.name}</span>
-                        <span className="text-sm font-bold text-secondary">{item.price}</span>
+                    <li key={i} className="group cursor-default">
+                      <div className="flex justify-between items-baseline mb-2 border-b border-white/5 pb-2">
+                        <span className="text-lg font-serif text-accent group-hover:text-secondary transition-colors duration-500">{item.name}</span>
+                        <span className="text-sm font-bold text-secondary ml-4 whitespace-nowrap">{item.price}</span>
                       </div>
-                      <p className="text-xs text-accent/40 italic font-light">{item.description}</p>
+                      <p className="text-xs text-accent/40 italic font-light tracking-wide">{item.description}</p>
                     </li>
                   ))}
                 </ul>
@@ -80,9 +80,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                   <a 
                     href="/drinks.pdf" 
                     target="_blank" 
-                    className="inline-flex items-center gap-3 text-secondary hover:text-white border border-secondary/30 hover:border-secondary px-8 py-3 transition-all uppercase tracking-widest text-xs font-bold"
+                    className="inline-flex items-center gap-3 text-secondary hover:text-white border border-secondary/20 hover:border-secondary px-8 py-4 transition-all duration-500 uppercase tracking-widest text-[10px] font-bold"
                   >
-                    <FileText size={16} /> {t('view_drinks_pdf')}
+                    <FileText size={14} /> {t('view_drinks_pdf')}
                   </a>
                 </div>
               </div>
@@ -90,10 +90,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             
             <div className="lg:col-span-7 grid grid-cols-2 gap-6 order-1 lg:order-2">
               <div className="pt-12">
-                <img src={drinkMenu.images[0]} className="w-full aspect-[3/4] object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000 border border-secondary/20 shadow-2xl" alt="Drink" />
+                <img src={drinkMenu.images[0]} className="w-full aspect-[3/4] object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000 border border-secondary/10 shadow-2xl" alt="Drink" />
               </div>
               <div>
-                <img src={drinkMenu.images[1]} className="w-full aspect-[3/4] object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000 border border-secondary/20 shadow-2xl" alt="Drink" />
+                <img src={drinkMenu.images[1]} className="w-full aspect-[3/4] object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000 border border-secondary/10 shadow-2xl" alt="Drink" />
               </div>
             </div>
           </section>
@@ -102,27 +102,27 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <section className="grid lg:grid-cols-12 gap-16 items-center">
             <div className="lg:col-span-7 grid grid-cols-2 gap-6">
               <div>
-                <img src={foodMenu.images[0]} className="w-full aspect-[3/4] object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000 border border-secondary/20 shadow-2xl" alt="Food" />
+                <img src={foodMenu.images[0]} className="w-full aspect-[3/4] object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000 border border-secondary/10 shadow-2xl" alt="Food" />
               </div>
               <div className="pt-12">
-                <img src={foodMenu.images[1]} className="w-full aspect-[3/4] object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000 border border-secondary/20 shadow-2xl" alt="Food" />
+                <img src={foodMenu.images[1]} className="w-full aspect-[3/4] object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-1000 border border-secondary/10 shadow-2xl" alt="Food" />
               </div>
             </div>
 
             <div className="lg:col-span-5 space-y-8">
-              <div className="glass-card">
-                <div className="mb-10 text-center">
-                  <h2 className="text-4xl font-serif text-secondary mb-2 uppercase tracking-tighter">{foodMenu.title}</h2>
-                  <div className="w-20 h-[1px] bg-secondary/30 mx-auto mb-4"></div>
+              <div className="glass-card p-10 md:p-16">
+                <div className="mb-12 text-center">
+                  <h2 className="text-3xl font-serif text-secondary mb-3 uppercase tracking-[0.2em]">{foodMenu.title}</h2>
+                  <div className="w-12 h-[1px] bg-secondary/30 mx-auto mb-4"></div>
                 </div>
-                <ul className="space-y-4 mb-10">
+                <ul className="space-y-8 mb-12">
                   {foodMenu.items.map((item: any, i: number) => (
-                    <li key={i} className="menu-item group">
-                      <div className="flex justify-between items-baseline mb-1">
-                        <span className="text-lg font-serif text-accent group-hover:text-secondary transition-colors">{item.name}</span>
-                        <span className="text-sm font-bold text-secondary">{item.price}</span>
+                    <li key={i} className="group cursor-default">
+                      <div className="flex justify-between items-baseline mb-2 border-b border-white/5 pb-2">
+                        <span className="text-lg font-serif text-accent group-hover:text-secondary transition-colors duration-500">{item.name}</span>
+                        <span className="text-sm font-bold text-secondary ml-4 whitespace-nowrap">{item.price}</span>
                       </div>
-                      <p className="text-xs text-accent/40 italic font-light">{item.description}</p>
+                      <p className="text-xs text-accent/40 italic font-light tracking-wide">{item.description}</p>
                     </li>
                   ))}
                 </ul>
@@ -130,9 +130,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                   <a 
                     href="/menu.pdf" 
                     target="_blank" 
-                    className="inline-flex items-center gap-3 text-secondary hover:text-white border border-secondary/30 hover:border-secondary px-8 py-3 transition-all uppercase tracking-widest text-xs font-bold"
+                    className="inline-flex items-center gap-3 text-secondary hover:text-white border border-secondary/20 hover:border-secondary px-8 py-4 transition-all duration-500 uppercase tracking-widest text-[10px] font-bold"
                   >
-                    <FileText size={16} /> {t('view_menu_pdf')}
+                    <FileText size={14} /> {t('view_menu_pdf')}
                   </a>
                 </div>
               </div>
@@ -161,7 +161,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section id="contact" className="border-t border-white/5 py-32 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-serif text-white mb-12 uppercase tracking-wider animate-reveal">{t('contact_title')}</h2>
-          <div className="glass-card flex flex-col items-center gap-12 animate-reveal">
+          <div className="glass-card p-12 md:p-20 flex flex-col items-center gap-12 animate-reveal">
             <div className="flex flex-col items-center gap-4">
               <MapPin className="text-secondary" size={24} />
               <address className="not-italic text-lg text-accent/80 font-light tracking-wide">

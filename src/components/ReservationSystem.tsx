@@ -58,7 +58,7 @@ export default function ReservationSystem() {
         </div>
 
         {/* Main Entry Bar */}
-        <div className="glass-card p-8 md:p-12 flex flex-col md:flex-row gap-8 items-end justify-between">
+        <div className="glass-card p-12 md:p-16 flex flex-col md:flex-row gap-8 items-end justify-between">
           <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
             <div className="space-y-3">
               <label className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-secondary font-bold">
