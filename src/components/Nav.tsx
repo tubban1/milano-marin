@@ -65,6 +65,13 @@ export default async function Nav({ locale }: { locale: string }) {
             >
               EN
             </Link>
+            <span className="text-white/10">|</span>
+            <Link 
+              href="/de" 
+              className={`transition-colors ${locale === 'de' ? 'text-secondary' : 'text-accent/30 hover:text-white'}`}
+            >
+              DE
+            </Link>
           </div>
         </div>
       </div>
