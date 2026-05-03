@@ -28,7 +28,7 @@ export default async function LocaleLayout({
     <NextIntlClientProvider messages={messages}>
       <CustomCursor />
       <div className="flex flex-col min-h-screen">
-        <Nav locale={locale} />
+        <Nav />
         <main className="flex-grow">
           {children}
         </main>
